@@ -60,6 +60,50 @@ void regularFileMenu(char* file) {
     printf("Please enter your options\n\n");
     printf("STANDARD INPUT:");
     fgets(options, N, stdin);
+    // if we get here it means that the input is valid
+        // we compute the operations received from the input
+        for (int i = 0; i < strlen(options); i++)
+        {
+            switch (options[i])
+            {
+            case 'n':
+                printf("File name: %s\n", file);
+                break;
+            case 'd':
+                 printf("File size: %ld bytes\n", (long)st.st_size);
+                break;
+            case 'h':
+                printf("Hard link count: %ld\n", (long)st.st_nlink);
+                break;
+            case 'm':
+                printf("Time of last modification: %s", ctime(&st.st_mtime));
+                break;
+            case 'a':
+                printf("Access rights: \n");
+                    printf("User:\n");
+                    st.st_mode & S_IRUSR ? printf("Read - yes\n") : printf("Read - no\n");
+                    st.st_mode & S_IWUSR ? printf("Write - yes\n") : printf("Write - no\n");
+                    st.st_mode & S_IXUSR ? printf("Execute - yes\n") : printf("Execute - no");
+                    
+                break;
+            case 'l':
+                char link_name[256];
+                printf("Enter name of the link: ");
+                scanf("%s", link_name);
+                // create symbolic link
+                if (symlink(file, link_name) < 0) {
+                    printf("Error: Cannot create symbolic link '%s'\n", link_name);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        
+        
+    } else {
+        printf("Error: Invalid input\n");
+    }
 }
 
 
